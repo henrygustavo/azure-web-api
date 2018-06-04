@@ -14,18 +14,31 @@
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            RegisterIOC(config);
+
+            config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+        }
+
+        public static void RegisterIOC(HttpConfiguration config)
+        {
             var container = new UnityContainer();
-           
+
             container.RegisterType<ISecretKeyProvider, SecretKeyProvider>
-            (new InjectionConstructor(AzureKeys.KeyVaultClientId, AzureKeys.KeyVaultSecret, AzureKeys.KeyVaultBaseUrl));
+                (new InjectionConstructor(AzureKeys.KeyVaultClientId, AzureKeys.KeyVaultSecret, AzureKeys.KeyVaultBaseUrl));
 
             container.RegisterType<IItemRepository, ItemRepository>();
             container.RegisterType<IImageFaceRepository, ImageFaceRepository>();
             container.RegisterType<IImageRecognitionRepository, ImageRecognitionRepository>();
             container.RegisterType<IDataBaseManager, DataBaseManager>(new InjectionConstructor(typeof(ISecretKeyProvider),
-                                                                      AzureKeys.CosmoDBVaultName));
+                AzureKeys.CosmoDBVaultName));
             container.RegisterSingleton<ICognitiveService, CognitiveService>(new InjectionConstructor(typeof(ISecretKeyProvider),
-                                                                             AzureKeys.CognityServicesVaultName));
+                AzureKeys.CognityServicesVaultName));
 
             container.RegisterSingleton<IStorageService, StorageService>(new InjectionConstructor(typeof(ISecretKeyProvider), AzureKeys.StorageVaultName));
 
@@ -36,13 +49,6 @@
             var mapper = AutoMapperConfig.InitializeAutoMapper().CreateMapper();
             container.RegisterInstance(mapper);
 
-            config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
         }
     }
 }
