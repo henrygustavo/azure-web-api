@@ -9,6 +9,7 @@
     using Service.Implementations;
     using Service.Interfaces;
     using Newtonsoft.Json.Serialization;
+    using System.Web.Http.ExceptionHandling;
 
     public static class WebApiConfig
     {
@@ -29,6 +30,8 @@
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
+
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
         }
 
         public static void RegisterIOC(HttpConfiguration config)
