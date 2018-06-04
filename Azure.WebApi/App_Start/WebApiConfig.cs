@@ -8,6 +8,7 @@
     using Repository.Interfaces;
     using Service.Implementations;
     using Service.Interfaces;
+    using Newtonsoft.Json.Serialization;
 
     public static class WebApiConfig
     {
@@ -23,6 +24,11 @@
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            var jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            config.Formatters.Remove(config.Formatters.XmlFormatter);
         }
 
         public static void RegisterIOC(HttpConfiguration config)
