@@ -26,27 +26,23 @@
         public IHttpActionResult Authenticate([FromBody] LoginRequest login)
         {
             _loggerService.LogInformation("start - Authenticate");
-
-            var loginResponse = new LoginResponse();
-            LoginRequest loginrequest = new LoginRequest
+            if (string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
             {
-                UsernNme = login.UsernNme.ToLower(),
-                Password = login.Password
-            };
+                return BadRequest("Bad credentials");
+            }
 
-            var isUsernamePasswordValid = loginrequest.Password == "admin";
+            var isUsernamePasswordValid = login.Password == "admin";
 
             if (!isUsernamePasswordValid)
             {
-                loginResponse.ResponseMsg.StatusCode = HttpStatusCode.Unauthorized;
+                var loginResponse = new LoginResponse { ResponseMsg = {StatusCode = HttpStatusCode.Unauthorized}};
                 IHttpActionResult response = ResponseMessage(loginResponse.ResponseMsg);
                 return response;
             }
 
+            _loggerService.LogInformation($"Get token for user: {login.UserName}");
 
-            _loggerService.LogInformation($"Get token for user: {login.UsernNme}");
-
-            string jwToken = AuthTokenGenerator.CreateToken(loginrequest.UsernNme, _secretAuthKey);
+            string jwToken = AuthTokenGenerator.CreateToken(login.UserName, _secretAuthKey);
 
             _loggerService.LogInformation("end - Authenticate");
 
