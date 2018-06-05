@@ -16,7 +16,7 @@
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            RegisterIOC(config);
+           var container = RegisterIOC(config);
 
             config.MapHttpAttributeRoutes();
 
@@ -31,10 +31,12 @@
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
-            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
+            config.Services.Replace(typeof(IExceptionHandler),
+                                    new GlobalExceptionHandler(container.Resolve<ILoggerService>()));
+
         }
 
-        public static void RegisterIOC(HttpConfiguration config)
+        public static UnityContainer RegisterIOC(HttpConfiguration config)
         {
             var container = new UnityContainer();
 
@@ -54,10 +56,10 @@
             container.RegisterType<ILoggerService, LoggerService>(new InjectionConstructor(typeof(ISecretKeyProvider), AzureKeys.ApplicatonInsightKey));
 
             config.DependencyResolver = new UnityResolver(container);
-
             var mapper = AutoMapperConfig.InitializeAutoMapper().CreateMapper();
             container.RegisterInstance(mapper);
 
+            return container;
         }
     }
 }
