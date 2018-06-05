@@ -13,7 +13,8 @@
     using Models;
     using System.Collections.Generic;
 
-    public class ImagesController : BaseController
+    [Authorize]
+    public class ImagesController : BaseApiController
     {
         private readonly ICognitiveService _cognitiveService;
         private readonly IImageRecognitionRepository _imageRecognitionRepository;

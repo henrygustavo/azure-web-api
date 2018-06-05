@@ -4,12 +4,12 @@
     using Service.Interfaces;
     using AutoMapper;
 
-    public abstract class BaseController : ApiController
+    public abstract class BaseApiController : ApiController
     {
         protected readonly IMapper _mapper;
         protected readonly ILoggerService _loggerService;
 
-        protected BaseController(IMapper mapper, ILoggerService loggerService)
+        protected BaseApiController(IMapper mapper, ILoggerService loggerService)
         {
             _mapper = mapper;
             _loggerService = loggerService;

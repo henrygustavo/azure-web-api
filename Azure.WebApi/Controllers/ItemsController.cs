@@ -10,7 +10,7 @@
     using Models;
     using Entity;
 
-    public class ItemsController : BaseController
+    public class ItemsController : BaseApiController
     {
         private readonly IItemRepository _itemRepository;
         public ItemsController(IItemRepository itemRepository,

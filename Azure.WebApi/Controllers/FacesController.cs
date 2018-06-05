@@ -13,7 +13,8 @@
     using Repository.Interfaces;
     using Entity;
 
-    public class FacesController : BaseController
+    [Authorize]
+    public class FacesController : BaseApiController
     {
         private readonly ICognitiveService _cognitiveService;
         private readonly IImageFaceRepository _imageFaceRepository;

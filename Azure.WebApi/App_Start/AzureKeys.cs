@@ -22,6 +22,7 @@
 
         public static string ApplicatonInsightKey => CloudConfigurationManager.GetSetting("AzureApplicatonInsightKey");
 
+        public static string AuthTokenKey => CloudConfigurationManager.GetSetting("AzureAuthTokenKey");
 
     }
 }

@@ -235,22 +235,26 @@
     <Compile Include="App_Start\AzureKeys.cs" />
     <Compile Include="App_Start\GlobalExceptionHandler.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
+    <Compile Include="App_Start\TokenValidator.cs" />
     <Compile Include="App_Start\UnityResolver.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\FacesController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthTokenGenerator.cs" />
     <Compile Include="Helpers\StringCipher.cs" />
     <Compile Include="Models\BaseImageModel.cs" />
     <Compile Include="Models\FaceAttributeModel.cs" />
     <Compile Include="Models\FaceModel.cs" />
     <Compile Include="Models\ImageRecognitionModel.cs" />
     <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
