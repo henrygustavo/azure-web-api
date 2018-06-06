@@ -60,6 +60,7 @@
     <Compile Include="Implementations\DataBaseManager.cs" />
     <Compile Include="Implementations\ImageFaceRepository.cs" />
     <Compile Include="Implementations\ImageRecognitionRepository.cs" />
+    <Compile Include="Implementations\UserRepository.cs" />
     <Compile Include="Interfaces\IDataBaseManager.cs" />
     <Compile Include="Interfaces\IImageFaceRepository.cs" />
     <Compile Include="Interfaces\IImageRecognitionRepository.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Implementations\Repository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Implementations\ItemRepository.cs" />
+    <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

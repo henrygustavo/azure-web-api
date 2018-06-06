@@ -7,18 +7,21 @@
     using Service.Interfaces;
     using App_Start;
     using Helpers;
+    using Azure.Repository.Interfaces;
 
     public class LoginController : BaseApiController
     {
 
         private readonly ISecretKeyProvider _secretKeyProvider;
         private readonly string _secretAuthKey;
+        private readonly IUserRepository _userRepository;
 
         public LoginController(IMapper mapper, ISecretKeyProvider secretKeyProvider,
-                               ILoggerService loggerService) : base(mapper, loggerService)
+                               ILoggerService loggerService, IUserRepository userRepository) : base(mapper, loggerService)
         {
             _secretKeyProvider = secretKeyProvider;
             _secretAuthKey = _secretKeyProvider.GetSecret(AzureKeys.AuthTokenKey);
+            _userRepository = userRepository;
 
         }
 
@@ -30,10 +33,8 @@
             {
                 return BadRequest("Bad credentials");
             }
-
-            var isUsernamePasswordValid = login.Password == "admin";
-
-            if (!isUsernamePasswordValid)
+            
+            if (!_userRepository.HasValidCredentials(login.UserName, login.Password))
             {
                 var loginResponse = new LoginResponse { ResponseMsg = {StatusCode = HttpStatusCode.Unauthorized}};
                 IHttpActionResult response = ResponseMessage(loginResponse.ResponseMsg);

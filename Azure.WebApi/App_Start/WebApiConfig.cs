@@ -46,6 +46,7 @@
                 (new InjectionConstructor(AzureKeys.KeyVaultClientId, AzureKeys.KeyVaultSecret, AzureKeys.KeyVaultBaseUrl));
 
             container.RegisterType<IItemRepository, ItemRepository>();
+            container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IImageFaceRepository, ImageFaceRepository>();
             container.RegisterType<IImageRecognitionRepository, ImageRecognitionRepository>();
             container.RegisterType<IDataBaseManager, DataBaseManager>(new InjectionConstructor(typeof(ISecretKeyProvider),
