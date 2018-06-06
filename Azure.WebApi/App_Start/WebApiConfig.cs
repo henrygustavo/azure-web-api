@@ -10,35 +10,42 @@
     using Service.Interfaces;
     using Newtonsoft.Json.Serialization;
     using System.Web.Http.ExceptionHandling;
+    using System.Web.Http.Cors;
 
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-           var container = RegisterIOC(config);
+            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 
             config.MapHttpAttributeRoutes();
 
+            config.Routes.MapHttpRoute(
+              name: "DefaultApi",
+              routeTemplate: "api/{controller}/{id}",
+              defaults: new { id = RouteParameter.Optional }
+          );
+
+            SetSerializationSettings(config);
+
+            var container = RegisterIOC(config);
+
             config.MessageHandlers.Add(new TokenValidationHandler(container.Resolve<ISecretKeyProvider>()));
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler(container.Resolve<ILoggerService>()));
 
+        }
+
+        private static void SetSerializationSettings(HttpConfiguration config)
+        {
             var jsonFormatter = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);
 
-            config.Services.Replace(typeof(IExceptionHandler),
-                                    new GlobalExceptionHandler(container.Resolve<ILoggerService>()));
-
         }
 
-        public static UnityContainer RegisterIOC(HttpConfiguration config)
+        private static UnityContainer RegisterIOC(HttpConfiguration config)
         {
             var container = new UnityContainer();
 
