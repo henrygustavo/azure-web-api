@@ -7,7 +7,7 @@
     using Service.Interfaces;
     using App_Start;
     using Helpers;
-    using Azure.Repository.Interfaces;
+    using Repository.Interfaces;
 
     public class LoginController : BaseApiController
     {
@@ -47,7 +47,7 @@
 
             _loggerService.LogInformation("end - Authenticate");
 
-            return Ok(jwToken);
+            return Ok(new { token = jwToken});
         }
     }
 }
