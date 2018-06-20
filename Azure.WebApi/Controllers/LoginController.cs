@@ -11,16 +11,13 @@
 
     public class LoginController : BaseApiController
     {
-
-        private readonly ISecretKeyProvider _secretKeyProvider;
         private readonly string _secretAuthKey;
         private readonly IUserRepository _userRepository;
 
         public LoginController(IMapper mapper, ISecretKeyProvider secretKeyProvider,
                                ILoggerService loggerService, IUserRepository userRepository) : base(mapper, loggerService)
         {
-            _secretKeyProvider = secretKeyProvider;
-            _secretAuthKey = _secretKeyProvider.GetSecret(AzureKeys.AuthTokenKey);
+            _secretAuthKey = secretKeyProvider.GetSecret(AzureKeys.AuthTokenKey);
             _userRepository = userRepository;
 
         }
