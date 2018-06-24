@@ -40,7 +40,8 @@
 
             _loggerService.LogInformation($"Get token for user: {login.UserName}");
 
-            string jwToken = AuthTokenGenerator.CreateToken(login.UserName, _secretAuthKey);
+            string jwToken = AuthTokenGenerator.CreateToken(login.UserName,
+                            _userRepository.GetRoleByUserName(login.UserName), _secretAuthKey);
 
             _loggerService.LogInformation("end - Authenticate");
 

@@ -43,6 +43,18 @@
             return Ok(_mapper.Map<List<ImageRecognitionModel>>(entities));
         }
 
+        [SwaggerOperation("Get")]
+        public async Task<IHttpActionResult> Get(string id)
+        {
+            _loggerService.LogInformation("start - Get image");
+
+            var entity = await _imageRecognitionRepository.GetByIdAsync(id);
+
+            _loggerService.LogInformation("end - Get image");
+
+            return Ok(_mapper.Map<ImageRecognitionModel>(entity));
+        }
+
         [HttpPost]
         [SwaggerOperation("Upload")]
         [SwaggerResponse(HttpStatusCode.OK)]

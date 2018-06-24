@@ -7,7 +7,7 @@
 
     public static class AuthTokenGenerator
     {
-        public static string CreateToken(string userName, string secretKey)
+        public static string CreateToken(string userName, string role, string secretKey)
         {
             DateTime issuedAt = DateTime.UtcNow;
 
@@ -17,7 +17,8 @@
 
             ClaimsIdentity claimsIdentity = new ClaimsIdentity(new[]
             {
-                new Claim("userName", userName)
+                new Claim("userName", userName),
+                new Claim("role", role)
             });
 
             var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.Default.GetBytes(secretKey));

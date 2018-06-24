@@ -49,6 +49,19 @@
             return Ok(imageList);
         }
 
+        [SwaggerOperation("Get")]
+        public async Task<IHttpActionResult> Get(string id)
+        {
+            _loggerService.LogInformation("start - Get face");
+
+            var entity = await _imageFaceRepository.GetByIdAsync(id);
+
+            _loggerService.LogInformation("end - Get face");
+
+            return Ok(new FaceModel(entity.Id, entity.ImagePath.ToString(),
+                _mapper.Map<List<FaceAttributeModel>>(entity.FaceAttributes)));
+        }
+
         [HttpPost]
         [SwaggerOperation("Upload")]
         [SwaggerResponse(HttpStatusCode.OK)]

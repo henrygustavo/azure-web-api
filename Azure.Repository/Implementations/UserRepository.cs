@@ -1,13 +1,19 @@
 ﻿namespace Azure.Repository.Implementations
 {
-    using Azure.Repository.Interfaces;
+    using Interfaces;
 
     public class UserRepository : IUserRepository
     {
 
         public bool HasValidCredentials(string userName, string password)
         {
-            return userName == "admin" && password == "admin";
+            return (userName == "admin" && password == "admin") ||
+                   (userName == "testuser" && password == "testuser");
+        }
+
+        public string GetRoleByUserName(string userName)
+        {
+            return userName == "admin" ? "admin" : "member";
         }
     }
 }
